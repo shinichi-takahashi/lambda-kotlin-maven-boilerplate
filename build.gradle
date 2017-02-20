@@ -1,0 +1,47 @@
+group 'jp.cloudpack.kotlin-boilerplate'
+version '1.8'
+
+buildscript {
+    ext.kotlin_version = '1.0.4'
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+apply plugin: 'groovy'
+apply plugin: 'java'
+apply plugin: 'kotlin'
+
+sourceCompatibility = 1.5
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile 'org.codehaus.groovy:groovy-all:2.3.11'
+    compile 'com.amazonaws:aws-lambda-java-core:1.1.0'
+    compile 'com.fasterxml.jackson.module:jackson-module-kotlin:2.7.1-2'
+    compile 'com.amazonaws:aws-lambda-java-core:1.1.0'
+    compile 'com.amazonaws:aws-lambda-java-log4j:1.0.0'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.8.5'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.8.5'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+task buildZip(type: Zip) {
+    from compileKotlin
+    from processResources
+    into('lib') {
+        from configurations.runtime
+    }
+    into('') {
+        from files('src/main/kotlin/boilerplate/config.json')
+    }
+}

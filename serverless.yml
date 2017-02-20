@@ -1,0 +1,19 @@
+service: boilerplate
+
+provider:
+  name: aws
+  runtime: java8
+  region: ap-northeast-1
+  apiKeys:
+    - ${self:provider.stage}-apiKey
+
+package:
+  artifact: build/distributions/boilerplate-1.8.zip
+
+functions:
+  boilerplate:
+    handler: boilerplate.Handler
+    events:
+      - http: POST hello
+        cors: true
+        private: true
